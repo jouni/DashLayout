@@ -1,7 +1,8 @@
-package com.vaadin.incubator.dashlayout.tests;
+package org.vaadin.jouni.dashlayout.tests;
+
+import org.vaadin.jouni.dashlayout.ui.HorDashLayout;
 
 import com.vaadin.Application;
-import com.vaadin.incubator.dashlayout.ui.HorDashLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;

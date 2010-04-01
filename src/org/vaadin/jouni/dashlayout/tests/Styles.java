@@ -1,6 +1,7 @@
-package com.vaadin.incubator.dashlayout.tests;
+package org.vaadin.jouni.dashlayout.tests;
 
-import com.vaadin.incubator.dashlayout.client.tests.VStyles;
+import org.vaadin.jouni.dashlayout.client.tests.VStyles;
+
 import com.vaadin.ui.ClientWidget;
 import com.vaadin.ui.TextField;
 

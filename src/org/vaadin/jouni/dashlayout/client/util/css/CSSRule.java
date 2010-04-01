@@ -1,4 +1,4 @@
-package com.vaadin.incubator.dashlayout.client.util.css;
+package org.vaadin.jouni.dashlayout.client.util.css;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -29,11 +29,11 @@ public class CSSRule {
         for(var i = 0; i < sheets.length; i++) {
         var sheet = sheets[i];
         if(sheet.href && sheet.href.indexOf("VAADIN/themes")>-1) {
-        this.@com.vaadin.incubator.dashlayout.client.util.css.CSSRule::rules = @com.vaadin.incubator.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(sheet, selector, deep);
+        this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules = @org.vaadin.jouni.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(sheet, selector, deep);
         return;
         }
         }
-        this.@com.vaadin.incubator.dashlayout.client.util.css.CSSRule::rules = [];
+        this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules = [];
     }-*/;
 
     /*
@@ -53,7 +53,7 @@ public class CSSRule {
         // IE handles imported sheet differently
         if(deep && sheet.imports.length > 0) {
         for(var i=0; i < sheet.imports.length; i++) {
-        var imports = @com.vaadin.incubator.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(sheet.imports[i], selector, deep);
+        var imports = @org.vaadin.jouni.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(sheet.imports[i], selector, deep);
         allMatches.concat(imports);
         }
         }
@@ -78,7 +78,7 @@ public class CSSRule {
         }
         } else if(deep && r.type == 3) {
         // Search @import stylesheet
-        var imports = @com.vaadin.incubator.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(r.styleSheet, selector, deep);
+        var imports = @org.vaadin.jouni.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(r.styleSheet, selector, deep);
         allMatches.concat(imports);
         }
         }
@@ -94,9 +94,9 @@ public class CSSRule {
      * @return the value of the property as a String
      */
     public native String getPropertyValue(final String propertyName) /*-{
-        var j = this.@com.vaadin.incubator.dashlayout.client.util.css.CSSRule::rules.length;
+        var j = this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules.length;
         for(var i=0; i<j; i++){
-        var value = this.@com.vaadin.incubator.dashlayout.client.util.css.CSSRule::rules[i].style[propertyName];
+        var value = this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules[i].style[propertyName];
         if(value)
         return value;
         }

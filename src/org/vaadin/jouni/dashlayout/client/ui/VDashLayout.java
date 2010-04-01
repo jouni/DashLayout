@@ -1,9 +1,12 @@
-package com.vaadin.incubator.dashlayout.client.ui;
+package org.vaadin.jouni.dashlayout.client.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import org.vaadin.jouni.dashlayout.client.util.css.CSSRule;
+import org.vaadin.jouni.dashlayout.client.util.css.CSSUtil;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.DomEvent.Type;
@@ -13,8 +16,6 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.WidgetCollection;
-import com.vaadin.incubator.dashlayout.client.util.css.CSSRule;
-import com.vaadin.incubator.dashlayout.client.util.css.CSSUtil;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.BrowserInfo;
 import com.vaadin.terminal.gwt.client.Container;

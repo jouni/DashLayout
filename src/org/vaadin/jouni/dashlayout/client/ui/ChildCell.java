@@ -1,9 +1,10 @@
-package com.vaadin.incubator.dashlayout.client.ui;
+package org.vaadin.jouni.dashlayout.client.ui;
+
+import org.vaadin.jouni.dashlayout.client.util.css.CSSUtil;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.incubator.dashlayout.client.util.css.CSSUtil;
 import com.vaadin.terminal.gwt.client.BrowserInfo;
 import com.vaadin.terminal.gwt.client.RenderSpace;
 import com.vaadin.terminal.gwt.client.UIDL;

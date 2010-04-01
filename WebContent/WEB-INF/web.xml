@@ -25,11 +25,11 @@
 		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
 		<init-param>
 			<param-name>application</param-name>
-			<param-value>com.vaadin.incubator.dashlayout.tests.TestApplication</param-value>
+			<param-value>org.vaadin.jouni.dashlayout.teststApplication</param-value>
 		</init-param>
 		<init-param>
 			<param-name>widgetset</param-name>
-			<param-value>com.vaadin.incubator.dashlayout.DashLayoutWidgetSet</param-value>
+			<param-value>org.vaadin.jouni.dashlayout.DashLayoutWidgetSet</param-value>
 		</init-param>
 	</servlet>
 

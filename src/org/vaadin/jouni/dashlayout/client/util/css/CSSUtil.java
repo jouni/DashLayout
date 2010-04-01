@@ -1,4 +1,4 @@
-package com.vaadin.incubator.dashlayout.client.util.css;
+package org.vaadin.jouni.dashlayout.client.util.css;
 
 import com.google.gwt.user.client.Element;
 import com.vaadin.terminal.gwt.client.RenderInformation.Size;
@@ -60,7 +60,7 @@ public class CSSUtil {
         // Name is expected in camelCase format
 
         // Store reference of this function (used in recursion)
-        var self = @com.vaadin.incubator.dashlayout.client.util.css.CSSUtil::getComputedStyleValue(Lcom/google/gwt/user/client/Element;Ljava/lang/String;);
+        var self = @org.vaadin.jouni.dashlayout.client.util.css.CSSUtil::getComputedStyleValue(Lcom/google/gwt/user/client/Element;Ljava/lang/String;);
 
         // Perform normalization and checks here (e.g. if margin has value "auto", return 0)
         if(name.indexOf("border") > -1 && name.indexOf("Width") > -1) {
