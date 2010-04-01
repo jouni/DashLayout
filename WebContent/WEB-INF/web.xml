@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+	<!--
+		THIS IS THE DEVELOPMENT web.xml Package web.xml can be found in
+		build/package, please update it too when making changes that should
+		affect the package.
+	-->
+
+
+<web-app>
+	<display-name>Vaadin</display-name>
+	<description>Vaadin examples</description>
+
+	<context-param>
+		<param-name>productionMode</param-name>
+		<param-value>false</param-value>
+		<description>Vaadin production mode</description>
+	</context-param>
+
+	<servlet>
+		<servlet-name>DashLayout</servlet-name>
+		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+		<init-param>
+			<param-name>application</param-name>
+			<param-value>com.vaadin.incubator.dashlayout.tests.TestApplication</param-value>
+		</init-param>
+		<init-param>
+			<param-name>widgetset</param-name>
+			<param-value>com.vaadin.incubator.dashlayout.DashLayoutWidgetSet</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>DashLayout</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+	</welcome-file-list>
+
+</web-app>

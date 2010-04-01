@@ -1,0 +1,45 @@
+@import "../reindeer/styles.css";
+
+.v-label:last-child {
+	background: #ddd;
+}
+.v-label {
+	background: #666;
+}
+.v-label {
+	width: 10px;
+	height: 200px;
+	margin-right: 3px;
+}
+
+.v-label:first-child {
+	height: 120px;
+}
+.v-label:last-child {
+	height: 170px;
+}
+
+.v-dashlayout {
+	border: 1px solid #ddd;
+}
+
+
+#v-dashlayout-details {
+	/* Only pixel values are allowed 
+ 	* (other units are interpreted as pixels too)
+ 	*/
+	letter-spacing: 8px;
+}
+
+.second {
+	border-color: red;
+	margin: 2px;
+}
+
+#root-details {
+	letter-spacing: 20px;
+	min-width: 400px;
+	max-width: 500px;
+	min-height: 300px;
+	max-height: 600px;
+}
