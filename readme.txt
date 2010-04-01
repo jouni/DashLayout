@@ -1,8 +1,6 @@
 DashLayout Component
 ==============================================
 
-NOTE: Project relocated to GitHub: http://github.com/jounikoivuviita/DashLayout
-
 This layout fulfills the following task:
 
 Provide theme designers a more flexible and efficient layout in terms of
@@ -102,6 +100,4 @@ TODO
  * Parametrize CSSRule 'deep' parameter (to allow handling of @import rules  for specific layouts
  * Default spacings can't be measured since CSSRule won't look from dashlayout.css (only from Vaadin theme)
    * Workaround is to add default spacing to custom theme
- * Min/max width/height support
- * ClickListeners
  * Implement caption handling
