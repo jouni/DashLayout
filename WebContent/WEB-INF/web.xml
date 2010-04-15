@@ -25,7 +25,20 @@
 		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
 		<init-param>
 			<param-name>application</param-name>
-			<param-value>org.vaadin.jouni.dashlayout.teststApplication</param-value>
+			<param-value>org.vaadin.jouni.dashlayout.tests.TestApplication</param-value>
+		</init-param>
+		<init-param>
+			<param-name>widgetset</param-name>
+			<param-value>org.vaadin.jouni.dashlayout.DashLayoutWidgetSet</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>Test</servlet-name>
+		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+		<init-param>
+			<param-name>application</param-name>
+			<param-value>org.vaadin.jouni.dashlayout.tests.jflamy.DashApplication</param-value>
 		</init-param>
 		<init-param>
 			<param-name>widgetset</param-name>
@@ -35,7 +48,17 @@
 
 	<servlet-mapping>
 		<servlet-name>DashLayout</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/dash/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>DashLayout</servlet-name>
+		<url-pattern>/VAADIN/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Test</servlet-name>
+		<url-pattern>/test/*</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>

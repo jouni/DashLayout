@@ -104,6 +104,7 @@ public class VDashLayout extends ComplexPanel implements Container {
         super();
         setElement(Document.get().createDivElement());
         setStylePrimaryName(CLASSNAME);
+        getElement().getStyle().setProperty("position", "relative");
         getElement().getStyle().setProperty("float", "left");
         getElement().getStyle().setProperty("cssFloat", "left");
         getElement().getStyle().setProperty("styleFloat", "left");
@@ -120,6 +121,16 @@ public class VDashLayout extends ComplexPanel implements Container {
     @Override
     public WidgetCollection getChildren() {
         return super.getChildren();
+    }
+
+    public int getVisibleChildrenCount() {
+        int count = 0;
+        for (Widget w : getChildren()) {
+            if (w.isVisible()) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public int getSpacing() {
@@ -236,10 +247,6 @@ public class VDashLayout extends ComplexPanel implements Container {
 
     public RenderSpace getAllocatedSpace(Widget child) {
         ChildCell cell = widgetToCell.get(child);
-        if (child instanceof VDashLayout) {
-            // Layout handles it's margins internally
-            return cell.getRenderSpace();
-        }
         return cell.getSpaceSansMargins();
     }
 
@@ -520,46 +527,49 @@ public class VDashLayout extends ComplexPanel implements Container {
         // Hide overflows for the time of layouting
         getElement().getStyle().setProperty("overflow", "hidden");
 
-        if (undefWidth) {
-            super.setWidth("");
-        }
-        if (undefHeight) {
-            super.setHeight("");
-        }
-        if (undefWidth || undefHeight) {
-            updateActualSize();
-        }
+        // if (undefWidth) {
+        // super.setWidth("");
+        // }
+        // if (undefHeight) {
+        // super.setHeight("");
+        // }
+        // if (undefWidth || undefHeight) {
+        // updateActualSize();
+        // }
 
         consumedSpace = 0;
         int totalSize = 0;
         int biggestSize = 0;
 
-        if (useSpacing) {
-            totalSize += getSpacing() * (getChildren().size() - 1);
-        }
-
         final ArrayList<ChildCell> updateAfter = new ArrayList<ChildCell>();
         for (Widget w : getChildren()) {
-            final ChildCell cell = getCells().get(w);
-            if (reset) {
-                // Reset widget size as well (true)
-                cell.reset(true);
-            }
-            if (cell.updateAfterOtherCells()) {
-                updateAfter.add(cell);
-                if (!cell.isRelativeSizeInParentOrientation()) {
-                    cell.updateWidgetMarginAndSize();
-                    totalSize += isHorizontal() ? cell.getWidgetSize()
-                            .getWidth() : cell.getWidgetSize().getHeight();
+            if (w.isVisible()) {
+                final ChildCell cell = getCells().get(w);
+                if (reset) {
+                    // Reset widget size as well (true)
+                    cell.reset(true);
                 }
-            } else {
-                cell.updateWidgetMarginAndSize();
-                cell.updateSpace();
-                cell.reAlign();
-                totalSize += cell.getMaxSizeInParentOrientation();
-                final int size = cell.getMaxSizeInNonParentOrientation();
-                if (size > biggestSize) {
-                    biggestSize = size;
+                cell.setPositionOrigin(totalSize);
+                if (cell.updateAfterOtherCells()) {
+                    updateAfter.add(cell);
+                    if (!cell.isRelativeSizeInParentOrientation()) {
+                        cell.updateWidgetMarginAndSize();
+                        // totalSize += isHorizontal() ? cell.getWidgetSize()
+                        // .getWidth() : cell.getWidgetSize().getHeight();
+                    }
+                } else {
+                    cell.updateWidgetMarginAndSize();
+                    cell.updateSpace();
+                    cell.reAlign();
+                    totalSize += cell.getMaxSizeInParentOrientation();
+                    final int size = cell.getMaxSizeInNonParentOrientation();
+                    if (size > biggestSize) {
+                        biggestSize = size;
+                    }
+                }
+
+                if (useSpacing && getChildren().indexOf(w) > 0) {
+                    totalSize += getSpacing();
                 }
             }
         }
@@ -573,14 +583,20 @@ public class VDashLayout extends ComplexPanel implements Container {
         // Update consumed space before calculating expand ratio sizes
         consumedSpace = totalSize;
 
+        // Incremental offset for the amount to shift all succeeding children's
+        // position origin
+        ArrayList<Integer> originOffsets = new ArrayList<Integer>();
+
         for (int i = 0; i < updateAfter.size(); i++) {
             ChildCell cell = updateAfter.get(i);
 
             // Reclaim previously reserved space (added back later)
-            if (!cell.isRelativeSizeInParentOrientation()) {
-                totalSize -= isHorizontal() ? cell.getWidgetSize().getWidth()
-                        : cell.getWidgetSize().getHeight();
-            }
+            // if (!cell.isRelativeSizeInParentOrientation()) {
+            // totalSize -= isHorizontal() ? cell.getWidgetSize().getWidth()
+            // : cell.getWidgetSize().getHeight();
+            // }
+
+            int originalSize = cell.getMaxSizeInParentOrientation();
 
             cell.updateWidgetMargin();
             cell.updateSpace();
@@ -592,11 +608,15 @@ public class VDashLayout extends ComplexPanel implements Container {
 
             cell.reAlign();
 
-            final int size = cell.getMaxSizeInNonParentOrientation();
+            int size = cell.getMaxSizeInNonParentOrientation();
             if (size > biggestSize) {
                 biggestSize = size;
             }
-            totalSize += cell.getMaxSizeInParentOrientation();
+            size = cell.getMaxSizeInParentOrientation();
+            totalSize += size;
+
+            originOffsets.add(getChildren().indexOf(cell.getWidget()), size
+                    - originalSize);
         }
 
         if (updateAfter.size() > 1
@@ -618,6 +638,16 @@ public class VDashLayout extends ComplexPanel implements Container {
             totalSize += last.getMaxSizeInParentOrientation();
         }
 
+        // Shift all cells that come after a relatively sized cell
+        for (Integer offset : originOffsets) {
+            int from = originOffsets.indexOf(offset);
+            for (int i = from + 1; i < getChildren().size(); i++) {
+                ChildCell cell = getCells().get(getChildren().get(i));
+                cell.setPositionOrigin(cell.getPositionOrigin() + offset);
+            }
+        }
+
+        // Fix layout size
         if (undefWidth) {
             width = isHorizontal() ? totalSize : biggestSize;
             super.setWidth(width + "px");

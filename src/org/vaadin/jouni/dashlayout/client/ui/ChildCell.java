@@ -31,12 +31,19 @@ public class ChildCell {
     private int alignmentOffsetTop = 0;
     private float expandRatio = -1;
     private int surplus = 0;
+    private int positionOrigin;
 
     public ChildCell(Widget child, VDashLayout parent) {
         widget = child;
         this.parent = parent;
         // Floats affect how computedStyle is calculated in browsers
         setFloat("left");
+        widget.getElement().getStyle().setProperty("position", "absolute");
+        if (parent.isHorizontal()) {
+            widget.getElement().getStyle().setPropertyPx("top", 0);
+        } else {
+            widget.getElement().getStyle().setPropertyPx("left", 0);
+        }
     }
 
     public void reset(boolean resetSize) {
@@ -44,6 +51,8 @@ public class ChildCell {
             widget.setWidth("");
             widget.setHeight("");
         }
+        widget.getElement().getStyle().setProperty("top", "");
+        widget.getElement().getStyle().setProperty("left", "");
         widget.getElement().getStyle().setPropertyPx("marginTop",
                 widgetMargin[0]);
         widget.getElement().getStyle().setPropertyPx("marginRight",
@@ -55,6 +64,19 @@ public class ChildCell {
         alignmentOffsetLeft = 0;
         alignmentOffsetTop = 0;
         surplus = 0;
+    }
+
+    public void setPositionOrigin(int origin) {
+        positionOrigin = origin;
+        if (parent.isHorizontal()) {
+            widget.getElement().getStyle().setPropertyPx("left", origin);
+        } else {
+            widget.getElement().getStyle().setPropertyPx("top", origin);
+        }
+    }
+
+    public int getPositionOrigin() {
+        return positionOrigin;
     }
 
     public void reAlign() {
@@ -194,13 +216,13 @@ public class ChildCell {
     }
 
     public void updateSpace() {
-        if (widget.isAttached()) {
+        if (widget.isAttached() && widget.isVisible()) {
             int width = -1;
             int height = -1;
 
             float ratio = 0;
             if ((parent.isHorizontal() && !parent.undefWidth)
-                    || !parent.undefHeight) {
+                    || (!parent.isHorizontal() && !parent.undefHeight)) {
                 float compoundRatio = parent.getCompoundRatio();
                 if (compoundRatio > 0 && expandRatio > 0) {
                     ratio = (expandRatio / compoundRatio);
@@ -214,14 +236,7 @@ public class ChildCell {
             if (parent.isHorizontal()) {
                 height = parent.height;
                 if (ratio != 0) {
-                    width = parent.width;
-                    if (isRelativeWidth()) {
-                        width = (int) ((width - parent.getConsumedSpace()) * ratio);
-                    } else {
-                        width = (int) (widgetSize.getWidth() + (width - parent
-                                .getConsumedSpace())
-                                * ratio);
-                    }
+                    width = (int) ((parent.width - parent.getConsumedSpace()) * ratio);
                 } else if (isRelativeWidth()) {
                     width = 0;
                 }
@@ -229,14 +244,7 @@ public class ChildCell {
             } else {
                 width = parent.width;
                 if (ratio != 0) {
-                    height = parent.height;
-                    if (isRelativeHeight()) {
-                        height = (int) ((height - parent.getConsumedSpace()) * ratio);
-                    } else {
-                        height = (int) (widgetSize.getHeight() + (height - parent
-                                .getConsumedSpace())
-                                * ratio);
-                    }
+                    height = (int) ((parent.height - parent.getConsumedSpace()) * ratio);
                 } else if (isRelativeHeight()) {
                     height = 0;
                 }
@@ -323,6 +331,14 @@ public class ChildCell {
     }
 
     public RenderSpace getSpaceSansMargins() {
+        if (widget instanceof VDashLayout) {
+            int left = parent.isHorizontal() ? alignmentOffsetLeft + surplus
+                    : alignmentOffsetLeft;
+            int top = parent.isHorizontal() ? alignmentOffsetTop
+                    : alignmentOffsetTop + surplus;
+            return new RenderSpace(space.getWidth() - left, space.getHeight()
+                    - top);
+        }
         return new RenderSpace(space.getWidth() - widgetMargin[1]
                 - widgetMargin[3], space.getHeight() - widgetMargin[0]
                 - widgetMargin[2]);
