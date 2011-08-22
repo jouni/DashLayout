@@ -8,6 +8,7 @@ import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Window;
 
@@ -54,19 +55,21 @@ public class TestApplication extends Application {
     Layout alignBottomUndefinedHeight() {
         AbstractOrderedLayout test = getTestLayout();
         test.setCaption("Align bottom, undefined height");
-        HorDashLayout imageArea = new HorDashLayout();
+        Button imageArea = new NativeButton();
         Button resizeButton = new Button("+");
 
-        imageArea.setWidth("200px");
+        imageArea.setWidth("50%");
         imageArea.setHeight("200px");
         test.addComponent(imageArea);
-        test.setComponentAlignment(imageArea, Alignment.MIDDLE_CENTER);
-        test.setExpandRatio(imageArea, 1);
+        // test.setComponentAlignment(imageArea, Alignment.TOP_RIGHT);
+        // test.setExpandRatio(imageArea, 1);
 
-        // test.addComponent(resizeButton);
+        test.addComponent(resizeButton);
         // test.setComponentAlignment(resizeButton, Alignment.BOTTOM_LEFT);
+        test.addComponent(new Button("foo"));
 
         test.setWidth("100%");
+        // test.setSpacing(true);
 
         return test;
     }

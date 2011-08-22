@@ -319,6 +319,9 @@ public class ChildCell {
                 .getHeight();
         final int widgetS = parent.isHorizontal() ? widgetSize.getWidth()
                 : widgetSize.getHeight();
+        if (getExpandRatio() > -1) {
+            return spaceSize;
+        }
         return Math.max(spaceSize, widgetS);
     }
 
@@ -346,12 +349,29 @@ public class ChildCell {
 
     public boolean updateAfterOtherCells() {
         if (parent.isHorizontal()) {
+            if (parent.getCompoundRatio() == -1 && expandRatio == -1
+                    && !parent.undefWidth) {
+                return true;
+            }
             return isRelativeHeight()
                     || (!parent.undefWidth && (isRelativeWidth() || expandRatio != -1));
         } else {
+            if (parent.getCompoundRatio() == -1 && expandRatio == -1
+                    && !parent.undefWidth) {
+                return true;
+            }
             return isRelativeWidth()
                     || (!parent.undefHeight && (isRelativeHeight() || expandRatio != -1));
         }
+    }
+
+    public boolean reAlignAfterOtherCells() {
+        if (parent.isHorizontal() && parent.undefHeight) {
+            return alignment.isBottom() || alignment.isVerticalCenter();
+        } else if (parent.undefWidth) {
+            return alignment.isRight() || alignment.isHorizontalCenter();
+        }
+        return false;
     }
 
     public float getExpandRatio() {

@@ -542,6 +542,7 @@ public class VDashLayout extends ComplexPanel implements Container {
         int biggestSize = 0;
 
         final ArrayList<ChildCell> updateAfter = new ArrayList<ChildCell>();
+        final ArrayList<ChildCell> reAlignAfter = new ArrayList<ChildCell>();
         for (Widget w : getChildren()) {
             if (w.isVisible()) {
                 final ChildCell cell = getCells().get(w);
@@ -551,11 +552,13 @@ public class VDashLayout extends ComplexPanel implements Container {
                 }
                 cell.setPositionOrigin(totalSize);
                 if (cell.updateAfterOtherCells()) {
-                    updateAfter.add(cell);
                     if (!cell.isRelativeSizeInParentOrientation()) {
                         cell.updateWidgetMarginAndSize();
-                        // totalSize += isHorizontal() ? cell.getWidgetSize()
-                        // .getWidth() : cell.getWidgetSize().getHeight();
+                        final int size = cell
+                                .getMaxSizeInNonParentOrientation();
+                        if (size > biggestSize) {
+                            biggestSize = size;
+                        }
                     }
                 } else {
                     cell.updateWidgetMarginAndSize();
@@ -566,6 +569,12 @@ public class VDashLayout extends ComplexPanel implements Container {
                     if (size > biggestSize) {
                         biggestSize = size;
                     }
+                }
+
+                if (cell.updateAfterOtherCells()) {
+                    updateAfter.add(cell);
+                } else if (cell.reAlignAfterOtherCells()) {
+                    reAlignAfter.add(cell);
                 }
 
                 if (useSpacing && getChildren().indexOf(w) > 0) {
@@ -590,12 +599,6 @@ public class VDashLayout extends ComplexPanel implements Container {
         for (int i = 0; i < updateAfter.size(); i++) {
             ChildCell cell = updateAfter.get(i);
 
-            // Reclaim previously reserved space (added back later)
-            // if (!cell.isRelativeSizeInParentOrientation()) {
-            // totalSize -= isHorizontal() ? cell.getWidgetSize().getWidth()
-            // : cell.getWidgetSize().getHeight();
-            // }
-
             int originalSize = cell.getMaxSizeInParentOrientation();
 
             cell.updateWidgetMargin();
@@ -615,8 +618,7 @@ public class VDashLayout extends ComplexPanel implements Container {
             size = cell.getMaxSizeInParentOrientation();
             totalSize += size;
 
-            originOffsets.add(getChildren().indexOf(cell.getWidget()), size
-                    - originalSize);
+            originOffsets.add(getChildren().indexOf(cell.getWidget()), size);
         }
 
         if (updateAfter.size() > 1
@@ -639,12 +641,14 @@ public class VDashLayout extends ComplexPanel implements Container {
         }
 
         // Shift all cells that come after a relatively sized cell
+        int cumulativeOffset = 0;
         for (Integer offset : originOffsets) {
             int from = originOffsets.indexOf(offset);
             for (int i = from + 1; i < getChildren().size(); i++) {
                 ChildCell cell = getCells().get(getChildren().get(i));
-                cell.setPositionOrigin(cell.getPositionOrigin() + offset);
+                cell.setPositionOrigin(cumulativeOffset + offset);
             }
+            cumulativeOffset += offset;
         }
 
         // Fix layout size

@@ -1,0 +1,15 @@
+/.settings
+
+.svn
+
+/deploy
+
+*.launch
+
+*Thumbs.db
+
+WebContent/VAADIN/widgetsets
+
+/build
+
+WebContent/WEB-INF/lib/vaadin*.jar
