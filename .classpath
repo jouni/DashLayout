@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="var" path="VAADIN_DOWNLOAD/gwt-user/2.0.3/gwt-user.jar"/>
-	<classpathentry kind="var" path="VAADIN_DOWNLOAD/gwt-dev/2.0.3/gwt-dev.jar"/>
+	<classpathentry kind="var" path="VAADIN_DOWNLOAD/gwt-dependencies/2.3.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="var" path="VAADIN_DOWNLOAD/gwt-dependencies/2.3.0/validation-api-1.0.0.GA.jar"/>
+	<classpathentry kind="var" path="VAADIN_DOWNLOAD/gwt-user/2.3.0/gwt-user.jar"/>
+	<classpathentry kind="var" path="VAADIN_DOWNLOAD/gwt-dev/2.3.0/gwt-dev.jar"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/Applications/Eclipse 3.7 (Indigo)/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/gwt-user.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Applications/Eclipse%203.7%20(Indigo)/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Applications/Eclipse 3.7 (Indigo)/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/gwt-dev.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Applications/Eclipse%203.7%20(Indigo)/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Applications/Eclipse 3.7 (Indigo)/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="lib" path="/Applications/Eclipse 3.7 (Indigo)/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/validation-api-1.0.0.GA.jar" sourcepath="/Applications/Eclipse 3.7 (Indigo)/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/validation-api-1.0.0.GA-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.preview.runtimeTarget/J2EE Preview"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/JVM 1.5.0 (MacOS X Default)"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

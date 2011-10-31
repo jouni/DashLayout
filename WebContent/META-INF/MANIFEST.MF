@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
-Class-Path: 
 Vaadin-License-Title: Apache License 2.0
-Implementation-Title: DashLayout
-Vaadin-Package-Version: 1
-Implementation-Version: 0.1.5-beta
-Vaadin-Widgetsets: com.vaadin.incubator.dashlayout.DashLayoutWidgetSet
 Implementation-Vendor: Oy IT Mill Ltd
+Implementation-Title: DashLayout
+Implementation-Version: 0.1.6
+Vaadin-Package-Version: 1
+Vaadin-Widgetsets: com.vaadin.incubator.dashlayout.DashLayoutWidgetSet
+Class-Path: 
 

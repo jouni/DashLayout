@@ -7,44 +7,44 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class CSSRule {
 
-    private final String selector;
-    private JavaScriptObject rules = null;
+	private final String selector;
+	private JavaScriptObject rules = null;
 
-    /**
-     * 
-     * @param selector
-     *            the CSS selector to search for in the stylesheets
-     * @param deep
-     *            should the search follow any @import statements?
-     */
-    public CSSRule(final String selector, final boolean deep) {
-        this.selector = selector;
-        fetchRule(selector, deep);
-    }
+	/**
+	 * 
+	 * @param selector
+	 *            the CSS selector to search for in the stylesheets
+	 * @param deep
+	 *            should the search follow any @import statements?
+	 */
+	public CSSRule(final String selector, final boolean deep) {
+		this.selector = selector;
+		fetchRule(selector, deep);
+	}
 
-    // TODO how to find the right LINK-element? We should probably give the
-    // stylesheet a name.
-    private native void fetchRule(final String selector, final boolean deep) /*-{
-        var sheets = $doc.styleSheets;
-        for(var i = 0; i < sheets.length; i++) {
-        var sheet = sheets[i];
-        if(sheet.href && sheet.href.indexOf("VAADIN/themes")>-1) {
-        this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules = @org.vaadin.jouni.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(sheet, selector, deep);
-        return;
-        }
-        }
-        this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules = [];
-    }-*/;
+	// TODO how to find the right LINK-element? We should probably give the
+	// stylesheet a name.
+	private native void fetchRule(final String selector, final boolean deep) /*-{
+		var sheets = $doc.styleSheets;
+		for ( var i = 0; i < sheets.length; i++) {
+			var sheet = sheets[i];
+			if (sheet.href && sheet.href.indexOf("VAADIN/themes") > -1) {
+				this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules = @org.vaadin.jouni.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(sheet, selector, deep);
+				return;
+			}
+		}
+		this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules = [];
+	}-*/;
 
-    /*
-     * Loops through all current style rules and collects all matching to
-     * 'rules' array. The array is reverse ordered (last one found is first).
-     */
-    private static native JavaScriptObject searchForRule(
-            final JavaScriptObject sheet, final String selector,
-            final boolean deep) /*-{
+	/*
+	 * Loops through all current style rules and collects all matching to
+	 * 'rules' array. The array is reverse ordered (last one found is first).
+	 */
+	private static native JavaScriptObject searchForRule(
+			final JavaScriptObject sheet, final String selector,
+			final boolean deep) /*-{
         if(!$doc.styleSheets)
-        return null;
+        	return null;
 
         selector = selector.toLowerCase();
 
@@ -52,59 +52,61 @@ public class CSSRule {
 
         // IE handles imported sheet differently
         if(deep && sheet.imports.length > 0) {
-        for(var i=0; i < sheet.imports.length; i++) {
-        var imports = @org.vaadin.jouni.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(sheet.imports[i], selector, deep);
-        allMatches.concat(imports);
-        }
+        	for(var i=0; i < sheet.imports.length; i++) {
+        		var imports = @org.vaadin.jouni.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(sheet.imports[i], selector, deep);
+        		allMatches.concat(imports);
+        	}
         }
 
         var theRules = new Array();
         if (sheet.cssRules)
-        theRules = sheet.cssRules
+        	theRules = sheet.cssRules
         else if (sheet.rules)
-        theRules = sheet.rules
+        	theRules = sheet.rules
 
         var j = theRules.length;
         for(var i=0; i<j; i++) {
-        var r = theRules[i];
-        if(r.type == 1 || sheet.imports) {
-        var selectors = r.selectorText.toLowerCase().split(",");
-        var n = selectors.length;
-        for(var m=0; m<n; m++) {
-        if(selectors[m].replace(/^\s+|\s+$/g, "") == selector) {
-        allMatches.unshift(r);
-        break; // No need to loop other selectors for this rule
-        }
-        }
-        } else if(deep && r.type == 3) {
-        // Search @import stylesheet
-        var imports = @org.vaadin.jouni.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(r.styleSheet, selector, deep);
-        allMatches.concat(imports);
-        }
+	    	var r = theRules[i];
+	    	if(r.type == 1 || sheet.imports) {
+	    		if(r.selectorText != null) {
+			        var selectors = r.selectorText.toLowerCase().split(",");
+			        var n = selectors.length;
+			        for(var m=0; m<n; m++) {
+			        	if(selectors[m].replace(/^\s+|\s+$/g, "") == selector) {
+			        		allMatches.unshift(r);
+			        		break; // No need to loop other selectors for this rule
+			        	}
+			        }
+	    		}
+		    } else if(deep && r.type == 3) {
+		        // Search @import stylesheet
+		        var imports = @org.vaadin.jouni.dashlayout.client.util.css.CSSRule::searchForRule(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;Z)(r.styleSheet, selector, deep);
+		        allMatches.concat(imports);
+	        }
         }
 
         return allMatches;
     }-*/;
 
-    /**
-     * Returns a specific property value from this CSS rule.
-     * 
-     * @param propertyName
-     *            camelCase CSS property name
-     * @return the value of the property as a String
-     */
-    public native String getPropertyValue(final String propertyName) /*-{
-        var j = this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules.length;
-        for(var i=0; i<j; i++){
-        var value = this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules[i].style[propertyName];
-        if(value)
-        return value;
-        }
-        return null;
-    }-*/;
+	/**
+	 * Returns a specific property value from this CSS rule.
+	 * 
+	 * @param propertyName
+	 *            camelCase CSS property name
+	 * @return the value of the property as a String
+	 */
+	public native String getPropertyValue(final String propertyName) /*-{
+		var j = this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules.length;
+		for ( var i = 0; i < j; i++) {
+			var value = this.@org.vaadin.jouni.dashlayout.client.util.css.CSSRule::rules[i].style[propertyName];
+			if (value)
+				return value;
+		}
+		return null;
+	}-*/;
 
-    public String getSelector() {
-        return selector;
-    }
+	public String getSelector() {
+		return selector;
+	}
 
 }
